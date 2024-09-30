@@ -6,5 +6,37 @@
     <title>Movimento do Componente</title>
     <style>
         canvas {
-            border:1px solid  
+            border:1px solid #d3d3d3;
+            background-color: #f1f1f1;*/ 
+            background-color: #A0A0A0; 
         }
+        .container{
+        float: left;
+        display:block;
+        }
+        </style>
+        <script type="text/javascript">
+           var myGamepiece_red;
+        function startGame() {
+            myGamepiece_red = new component(30,30,"red", 10, 0);
+            myGameArea.start();
+        }
+         var myGameArea = {
+            canvas : document.createElement("canvas"),
+            start : function() {
+                this.canvas.width = 1220;
+                this.canvas.height = 270;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval (updateGameArea, 20);
+                window.addEventListener('keydown', function (e){
+                    myGameArea.key = e.keyCode;
+                })
+                window.addEventListener('keyup', function (e){
+                    myGameArea.key =false;
+                    
+                })
+            }
+            
+
+         }
