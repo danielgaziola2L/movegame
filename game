@@ -1,42 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+  <head>
+    <title>Imagem</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimento do Componente</title>
     <style>
-        canvas {
-            border:1px solid #d3d3d3;
-            background-color: #f1f1f1;*/ 
-            background-color: #A0A0A0; 
-        }
-        .container{
+      canvas {
+        border:1px solid #d3d3d3;
+        background-color: purple;
+      }
+      .container{
         float: left;
-        display:block;
-        }
-        </style>
-        <script type="text/javascript">
-           var myGamepiece_red;
-        function startGame() {
-            myGamepiece_red = new component(30,30,"red", 10, 0);
-            myGameArea.start();
-        }
-         var myGameArea = {
-            canvas : document.createElement("canvas"),
-            start : function() {
-                this.canvas.width = 1220;
-                this.canvas.height = 270;
-                this.context = this.canvas.getContext("2d");
-                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-                this.interval = setInterval (updateGameArea, 20);
-                window.addEventListener('keydown', function (e){
-                    myGameArea.key = e.keyCode;
-                })
-                window.addEventListener('keyup', function (e){
-                    myGameArea.key =false;
-                    
-                })
-            }
-            
+        display: block;
+      }
+    </style>
+    <script>
+      var myGamePiece_red;
 
-         }
+      function startGame() {
+        myGamePiece_red = new component(30, 30, "red", 10, 0);
+        myGameArea.start();
+      }
+
+      var myGameArea = {
+        canvas : document.createElement("canvas"),
+        start : function() {
+          this.canvas.width = 1220;
+          this.canvas.height = 270;
+          this.context = this.canvas.getContext("2d");
+          document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+          this.interval = setInterval(updateGameArea, 20);
+          window.addEventListener('keydown', function (e) {
+            myGameArea.key = e.keyCode;
+          })
+          window.addEventListener('keyup', function (e) {
+            myGameArea.key = false;
+          })
+        },
+        clear : function() {
+          this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+      }
+
+      function component(width, height, color, x, y) {
+        this.width = width;
+        this.height = height;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.update = function() {
+          ctx = myGameArea.context;
+          /* inicio do novo componente */
+          ctx.beginPath();
+          ctx.fillStyle = this.color;
+          ctx.moveTo(this.x+200, this.y+100);
+          ctx.quadraticCurveTo(this.x+150,this.y+150, this.x+200, this.y+200);
+          ctx.fill();
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(this.x+200, this.y+100);
+          ctx.quadraticCurveTo(this.x+250, this.y+150, this.x+200, this.y+200);
+          ctx.fill();
+          ctx.stroke();
+          ctx.closePath();
+        }
+        this.newPos = function() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+        }
+      }
+
+      function updateGameArea() {
+        myGameArea.clear();
+        myGamePiece_red.newPos();
+        myGamePiece_red.update();
+        myGamePiece_red.speedX = 0;
+        myGamePiece_red.speedY = 0;
+        if (myGameArea.key && myGameArea.key == 37) {myGamePiece_red.speedX = -1; }
+        if (myGameArea.key && myGameArea.key == 39) {myGamePiece_red.speedX =  1; }
+        if (myGameArea.key && myGameArea.key == 38) {myGamePiece_red.speedY = -1; }
+        if (myGameArea.key && myGameArea.key == 40) {myGamePiece_red.speedY =  1; }
+        myGamePiece_red.newPos();
+        myGamePiece_red.update();
+      }
+
+      function moveup_red() {
+        myGamePiece_red.speedY -= 4;
+      }
+      function movedown_red() {
+        myGamePiece_red.speedY += 4;
+      }
+
+      function moveleft_red() {
+        myGamePiece_red.speedX -= 4;
+      }
+
+      function moveright_red() {
+        myGamePiece_red.speedX += 4;
+      }
+    </script>
+    <!-- fim do script do canvas-->
+  </head>
+
+  <body onload="startGame();">
+    <div>
+    <div style="text-align:center:width:400px;" class="container">
+    <p style="text-align:center;">Vermelho</p>
+    <button onclick="moveup_red()">UP</button><br><br>
+    <button onclick="moveleft_red()">LEFT</button>
+    <button onclick="moveright_red()">RIGHT</button><br><br>
+    <button onclick="movedown_red()">DOWN</button>
+  </div>
+  </div>
+  </body>
+</html>
